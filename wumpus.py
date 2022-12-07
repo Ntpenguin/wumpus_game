@@ -38,13 +38,22 @@ def player_move(p_position, w_position):
 def player_shoot(player_positon):
     print("Hub")
 
-print("Hunt the Wumpus!")
-
 def near_by(p_position, wum_position,b_position,pit_position):
     for room_nearby in cave[p_position]:
-        print()
+        if room_nearby == wum_position:
+            print("I smell a Wumpus")
+        if room_nearby in b_position:
+            print("Bats Nearby")
+        if room_nearby in pit_position:
+            print("I feel a draft")
 
 
-while True:
-    print("You are in room" + player_position)
+
+
+print("Hunt the Wumpus!")
+print(player_position,wumpus_position,bat_positions,pit_positions)
+near_by(player_position,wumpus_position,bat_positions,pit_positions)
+
+
+
 
