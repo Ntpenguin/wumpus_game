@@ -33,15 +33,33 @@ unUsable.append(pit_positions[0])
 pit_positions.append(randomNumExcluding(1, 20, unUsable))
 
 
-def player_shoot(p_position, arrow_nums, arrow_room):
-    arrowlist = []
-    for count in arrow_nums:
+def player_shoot(p_position):
+    print("Shooting")
+    arrows_num = int(input("Shoot through how many rooms? (1 to 5): "))
+    arrows_list = []
+    for i in range(arrows_num):
+        arrows_list.append([])
+    print("Room #1 of path")
+    room = input("")
+    if room in cave[p_position]:
+        print("Your arrow landed in room: " + str(room))
+        print("You have", str(len(arrows_list) - 1), "arrows left!")
+    else:
+        print("That was an invalid room. Next time, choose your room wisely...")
+        room = cave[p_position][randint(0, 2)]
+        print("Your arrow landed in room: " + str(room))
+
+    '''    
+    for count in arrows_list:
         if arrow_room in cave[p_position]:
-            print("Your arrow landed in room: " + str(arrow_room))
+            print("Your arrow landed in room: " + str(room))
+            print("You have", str(count), "arrows left!")
+            break
         else:
             print("That was an invalid room. Next time, choose your room wisely...")
             arrow_room = cave[p_position][randint(0, 2)]
             print("Your arrow landed in room: " + str(arrow_room))
+    '''
 
 
 def player_move(p_position, w_position):
@@ -56,4 +74,4 @@ def near_by(p_position, wum_position, b_position, pit_position):
         print()
 
 
-player_shoot(6, 5, 7)
+player_shoot(6)
