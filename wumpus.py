@@ -66,8 +66,12 @@ def player_shoot(p_position):
                 print("Arrow is in room", str(room), "now...")
             else:
                 print("Your arrow path is not a valid one... the arrow will travel randomly")
-                room = cave[arrow_trajectory][randint(0, 2)]
-                print("Arrow is in room", str(room), "now...")
+                for _ in arrows_list:
+                    room = choice(cave[arrow_trajectory])
+                    print("Arrow is in room", str(room), "now...")
+                    arrow_trajectory = choice(cave[arrow_trajectory])
+                else:
+                    break
             arrow_trajectory = room
         else:
             player_shoot(6)
