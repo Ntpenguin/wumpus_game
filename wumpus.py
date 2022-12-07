@@ -34,11 +34,12 @@ pit_positions.append(randomNumExcluding(1, 20, unUsable))
 
 
 def player_shoot(p_position):
-    arrow_trajectory = p_position
-    print("Shooting")
+    global wumpus_position
     global arrows
+    arrow_trajectory = p_position
     arrows = 5
     arrow_room = 0
+    print("Shooting")
     arrows_num = int(input("Shoot through how many rooms? (1 to 5): "))
     arrows_list = []
     for i in range(arrows_num):
@@ -46,7 +47,6 @@ def player_shoot(p_position):
     for _ in arrows_list:
         if 1 <= arrows_num <= 5:
             arrow_room = arrow_room + 1
-            arrows = arrows - 1
             print()
             print("Room #" + str(arrow_room), "of path")
             room = int(input(""))
@@ -55,16 +55,16 @@ def player_shoot(p_position):
                 quit()
             elif room in cave[arrow_trajectory]:
                 print("Arrow is in room", str(room), "now...")
-                print("You have", str(arrows), "arrows left!")
             else:
                 print("Your arrow path is not a valid one... the arrow will travel randomly")
                 room = cave[arrow_trajectory][randint(0, 2)]
                 print("Arrow is in room", str(room), "now...")
-                print("You have", str(arrows), "arrows left!")
             arrow_trajectory = room
         else:
             quit()
-
+    arrows = arrows - 1
+    print()
+    print("You have", str(arrows), "arrows left!")
 
 def arrow_count():
     if arrows == 0:
