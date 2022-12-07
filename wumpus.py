@@ -29,4 +29,4 @@ pit_positions.append(randomNumExcluding(1,20,unUsable))
 unUsable.append(pit_positions[0])
 pit_positions.append(randomNumExcluding(1,20,unUsable))
 
-def player_move()
+def player_move():
