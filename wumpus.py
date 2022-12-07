@@ -6,13 +6,13 @@ cave = {1: [2, 5, 8], 2: [1, 3, 10], 3: [2, 4, 12], 4: [3, 5, 14], 5: [1, 4, 6],
         15: [6, 14, 16], 16: [15, 17, 20], 17: [7, 18, 16], 18: [19, 17, 9],
         19: [18, 11, 20], 20: [13, 16, 19]}
 
-
-
+#This function gets a random number excluding the list
 def randomNumExcluding(bottom, top, exclude):
     return choice(
         [number for number in range(bottom, top)
          if number not in exclude]
     )
+# gets all random numbers excluding the values of the other ones so no two positions overlap
 unUsable = []
 player_position = randint(1,20)
 unUsable.append(player_position)
@@ -29,27 +29,28 @@ pit_positions.append(randomNumExcluding(1,20,unUsable))
 unUsable.append(pit_positions[0])
 pit_positions.append(randomNumExcluding(1,20,unUsable))
 
-def player_move(p_position, want_position):
-    global player_position
+#this is the function to move the player
+def player_move(p_position, want_position): #takes in the players postition and the wanted position
+    global player_position #gets all the variables as global to be able to be used in this function
     global wanted_room
     global wumpus_position
     global bat_positions
-    for room in cave[p_position]:
-        if want_position == room:
+    for room in cave[p_position]: #loops through possible rooms
+        if want_position == room: # if a possible room matches the wanted room
             p_position = want_position
-            player_position = want_position
-    if p_position != want_position:
+            player_position = want_position #sets player position to wanted position
+    if p_position != want_position: # error message if it isn't possible
         print("It is not possible to move from", p_position, "to", want_position)
         print()
-    if player_position == wumpus_position:
+    if player_position == wumpus_position: #if you move into a room with wumpus chance he moves
         wumpus_random()
-        if player_position == wumpus_position:
+        if player_position == wumpus_position: #if it is in the same room you die
             print("You die")
             quit()
-    if player_position == pit_positions[0] or player_position == pit_positions[1]:
+    if player_position == pit_positions[0] or player_position == pit_positions[1]: # if you fall into a pit you die
         print("You die")
         quit()
-    if player_position == bat_positions[0] or player_position == bat_positions[1]:
+    if player_position == bat_positions[0] or player_position == bat_positions[1]: # if you go into a room with a bat it randomly drops you off
         print("The bat has dropped you in a random room!")
         player_position = randint(1,20)
 
@@ -99,55 +100,51 @@ def arrow_count():
         print()
         print("You ran out of arrows and died!")
         quit()
-def near_by(p_position, wum_position,b_position,pit_position):
-    for room_nearby in cave[p_position]:
-        if room_nearby == wum_position:
+def near_by(p_position, wum_position,b_position,pit_position): #function to check whats nearby
+    for room_nearby in cave[p_position]: #loops through rooms nearby
+        if room_nearby == wum_position: #checks if wumpus is near
             print("I smell a Wumpus")
 
-        if room_nearby in b_position:
+        if room_nearby in b_position: #checks if bats are near
             print("Bats Nearby")
 
-        if room_nearby in pit_position:
+        if room_nearby in pit_position: #checks if the pits are near
             print("I feel a draft")
 
 
-def wumpus_random():
+def wumpus_random(): #function to have a chance to move wumpus used when you shoot a arrow or you move into the sam room
     global wumpus_position
-    if randint(0,100) <= 25:
+    if randint(0,100) <= 25: #25 percent change to stay in same room
         wumpus_position = wumpus_position
     else:
-        random_wumpus_room = choice(cave[wumpus_position])
+        random_wumpus_room = choice(cave[wumpus_position]) #75 percent chance to move to a nearby room
         wumpus_position = random_wumpus_room
         print("The wumpus has randomly moved")
 
 print("Hunt the Wumpus!")
 print()
-while True:
-    print("You are in room", player_position)
+while True: #loops through till something happens
+    print("You are in room", player_position) #prints basic info
     near_by(player_position,wumpus_position,bat_positions,pit_positions)
-    print(player_position,wumpus_position,bat_positions,pit_positions)
     options = ', '.join(str(item) for item in cave[player_position])
     print("Tunnels lead to rooms", options)
     print()
 
-    while True:
+    while True: #will keep going into vaild info is given
         try:
             shootOrMove = int(input("(1)Shoot or (2)move? (enter 1 or 2):"))
             if shootOrMove != 1 and shootOrMove != 2:
                 print("Enter 1 or 2")
                 shootOrMove = input()
         except:
-            shootOrMove = print("Bad entry. ENTER A NUMBER: ")
+            shootOrMove = print("Bad entry. ENTER A NUMBER")
 
         else:
             break
-    if int(shootOrMove) == 2:
+    if int(shootOrMove) == 2:#if you choose to move
         wanted_room = input("Where to? ")
         print()
-        player_move(player_position,int(wanted_room))
-    if int(shootOrMove) == 1:
-        player_shoot(player_position)
-        wumpus_random()
-
-
-
+        player_move(player_position,int(wanted_room)) # calls the move function with the given input
+    if int(shootOrMove) == 1: #if you choose to shoot
+        player_shoot(player_position) #calls the shoot function
+        wumpus_random() #chance for wumpus to move if arrow shot
