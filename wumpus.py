@@ -32,6 +32,16 @@ pit_positions.append(randomNumExcluding(1, 20, unUsable))
 unUsable.append(pit_positions[0])
 pit_positions.append(randomNumExcluding(1, 20, unUsable))
 
+'''
+while True:
+    try:
+    
+    except:
+    
+    else:
+        break
+'''
+
 
 def player_shoot(p_position):
     global wumpus_position
@@ -39,7 +49,6 @@ def player_shoot(p_position):
     arrow_trajectory = p_position
     arrows = 5
     arrow_room = 0
-    print("Shooting")
     arrows_num = int(input("Shoot through how many rooms? (1 to 5): "))
     arrows_list = []
     for i in range(arrows_num):
@@ -61,10 +70,12 @@ def player_shoot(p_position):
                 print("Arrow is in room", str(room), "now...")
             arrow_trajectory = room
         else:
-            quit()
-    arrows = arrows - 1
-    print()
-    print("You have", str(arrows), "arrows left!")
+            player_shoot(6)
+            break
+    if 1 <= arrows_num <= 5:
+        arrows = arrows - 1
+        print()
+        print("You have", str(arrows), "arrows left!")
 
 def arrow_count():
     if arrows == 0:
@@ -85,5 +96,6 @@ def near_by(p_position, wum_position, b_position, pit_position):
         print()
 
 
+print("Shooting")
 player_shoot(6)
 arrow_count()
