@@ -35,19 +35,24 @@ pit_positions.append(randomNumExcluding(1, 20, unUsable))
 
 def player_shoot(p_position):
     print("Shooting")
+    arrows = 5
     arrows_num = int(input("Shoot through how many rooms? (1 to 5): "))
     arrows_list = []
     for i in range(arrows_num):
         arrows_list.append([])
-    print("Room #1 of path")
-    room = input("")
-    if room in cave[p_position]:
-        print("Your arrow landed in room: " + str(room))
-        print("You have", str(len(arrows_list) - 1), "arrows left!")
-    else:
-        print("That was an invalid room. Next time, choose your room wisely...")
-        room = cave[p_position][randint(0, 2)]
-        print("Your arrow landed in room: " + str(room))
+    for j in arrows_list:
+        if 1 <= arrows_num <= 5:
+            print("Room #" + str(len(j)), "of path")
+            room = int(input(""))
+            if room in cave[p_position]:
+                print("Your arrow landed in room: " + str(room))
+                print("You have", str(arrows - 1), "arrows left!")
+            else:
+                print("Your arrow path is not a valid one... the arrow will travel randomly")
+                room = cave[p_position][randint(0, 2)]
+                print("Arrow is in room", str(room) + "...")
+        else:
+            print("INVALID")
 
     '''    
     for count in arrows_list:
