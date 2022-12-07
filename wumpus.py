@@ -32,58 +32,122 @@ pit_positions.append(randomNumExcluding(1,20,unUsable))
 def player_move(p_position, want_position):
     global player_position
     global wanted_room
+    global wumpus_position
+    global bat_positions
     for room in cave[p_position]:
         if want_position == room:
             p_position = want_position
             player_position = want_position
-            break
     if p_position != want_position:
         print("It is not possible to move from", p_position, "to", want_position)
         print()
+    if player_position == wumpus_position:
+        wumpus_random()
+        if player_position == wumpus_position:
+            print("You die")
+            quit()
+    if player_position == pit_positions[0] or player_position == pit_positions[1]:
+        print("You die")
+        quit()
+    if player_position == bat_positions[0] or player_position == bat_positions[1]:
+        print("The bat has dropped you in a random room!")
+        player_position = randint(1,20)
 
 def player_shoot(p_position):
-    print("Shooting")
+    global wumpus_position
+    global arrows
+    arrow_trajectory = p_position
+    arrows = 5
+    arrow_room = 0
     arrows_num = int(input("Shoot through how many rooms? (1 to 5): "))
     arrows_list = []
     for i in range(arrows_num):
         arrows_list.append([])
-    print("Room #1 of path")
-    room = input("")
-    if room in cave[p_position]:
-        print("Your arrow landed in room: " + str(room))
-        print("You have", str(len(arrows_list) - 1), "arrows left!")
-    else:
-        print("That was an invalid room. Next time, choose your room wisely...")
-        room = cave[p_position][randint(0, 2)]
-        print("Your arrow landed in room: " + str(room))
+    for _ in arrows_list:
+        if 1 <= arrows_num <= 5:
+            arrow_room = arrow_room + 1
+            print()
+            print("Room #" + str(arrow_room), "of path")
+            room = int(input(""))
+            if room == p_position:
+                print("You shot yourself and died!")
+                quit()
+            if room == wumpus_position:
+                print("You hit the wumpus! You win")
+                quit()
+            elif room in cave[arrow_trajectory]:
+                print("Arrow is in room", str(room), "now...")
+            else:
+                print("Your arrow path is not a valid one... the arrow will travel randomly")
+                for _ in arrows_list:
+                    room = choice(cave[arrow_trajectory])
+                    print("Arrow is in room", str(room), "now...")
+                    arrow_trajectory = choice(cave[arrow_trajectory])
+                else:
+                    break
+            arrow_trajectory = room
+        else:
+            player_shoot(6)
+            break
+    if 1 <= arrows_num <= 5:
+        arrows = arrows - 1
+        print()
+        print("You have", str(arrows), "arrows left!")
 
+def arrow_count():
+    if arrows == 0:
+        print()
+        print("You ran out of arrows and died!")
+        quit()
 def near_by(p_position, wum_position,b_position,pit_position):
     for room_nearby in cave[p_position]:
         if room_nearby == wum_position:
             print("I smell a Wumpus")
-            break
+
         if room_nearby in b_position:
             print("Bats Nearby")
-            break
+
         if room_nearby in pit_position:
             print("I feel a draft")
-            break
 
+
+def wumpus_random():
+    global wumpus_position
+    if randint(0,100) <= 25:
+        wumpus_position = wumpus_position
+    else:
+        random_wumpus_room = choice(cave[wumpus_position])
+        wumpus_position = random_wumpus_room
+        print("The wumpus has randomly moved")
 
 print("Hunt the Wumpus!")
 print()
 while True:
     print("You are in room", player_position)
     near_by(player_position,wumpus_position,bat_positions,pit_positions)
+    print(player_position,wumpus_position,bat_positions,pit_positions)
     options = ', '.join(str(item) for item in cave[player_position])
     print("Tunnels lead to rooms", options)
     print()
-    shootOrMove = input("(1)Shoot or (2)move? (enter 1 or 2):")
+
+    while True:
+        try:
+            shootOrMove = int(input("(1)Shoot or (2)move? (enter 1 or 2):"))
+            if shootOrMove != 1 and shootOrMove != 2:
+                print("Enter 1 or 2")
+                shootOrMove = input()
+        except:
+            shootOrMove = print("Bad entry. ENTER A NUMBER: ")
+
+        else:
+            break
     if int(shootOrMove) == 2:
-        wanted_room = input("Where to?")
+        wanted_room = input("Where to? ")
         print()
         player_move(player_position,int(wanted_room))
-
+    if int(shootOrMove) == 1:
+        player_shoot(player_position)
+        wumpus_random()
 
 
 
