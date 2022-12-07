@@ -1,3 +1,15 @@
+# By submitting this assignment, I agree to the following:
+#   "Aggies do not lie, cheat, or steal, or tolerate those who do."
+#   "I have not given or received any unauthorized aid on this assignment."
+#
+# Names:        Nathanael Baron
+#               Nathanael Kamat
+#               Ajith Roy
+#               Kyle Grimes
+# Section:      524
+# Assignment:   Wumpus Code - Final Project
+# Date:         12/7/22
+
 from random import *
 
 cave = {1: [2, 5, 8], 2: [1, 3, 10], 3: [2, 4, 12], 4: [3, 5, 14], 5: [1, 4, 6],
@@ -45,14 +57,14 @@ def player_move(p_position, want_position): #takes in the players postition and 
    if player_position == wumpus_position: #if you move into a room with wumpus chance he moves
        wumpus_random()
        if player_position == wumpus_position: #if it is in the same room you die
-           print("You die")
+           print("You were eaten by the wumpus!")
            quit()
    if player_position == pit_positions[0] or player_position == pit_positions[1]: # if you fall into a pit you die
-       print("You die")
+       print("You fell into the hole!")
        quit()
    if player_position == bat_positions[0] or player_position == bat_positions[1]: # if you go into a room with a bat it randomly drops you off
        print("The bat has dropped you in a random room!")
-       player_position = randint(1,20)
+       player_position = randint(1,20) # random
 
 def player_shoot(p_position):
     global wumpus_position
@@ -148,5 +160,4 @@ while True: #loops through till something happens
    if int(shootOrMove) == 1: #if you choose to shoot
        player_shoot(player_position) #calls the shoot function
        wumpus_random() #chance for wumpus to move if arrow shot
-
 
