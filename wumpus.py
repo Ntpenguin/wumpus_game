@@ -50,12 +50,12 @@ def player_shoot(p_position):
             print()
             print("Room #" + str(arrow_room), "of path")
             room = int(input(""))
-            if room in cave[arrow_trajectory]:
-                print("Arrow is in room", str(room), "now...")
-                print("You have", str(arrows), "arrows left!")
-            elif room == p_position:
+            if room == p_position:
                 print("You shot yourself and died!")
                 quit()
+            elif room in cave[arrow_trajectory]:
+                print("Arrow is in room", str(room), "now...")
+                print("You have", str(arrows), "arrows left!")
             else:
                 print("Your arrow path is not a valid one... the arrow will travel randomly")
                 room = cave[arrow_trajectory][randint(0, 2)]
