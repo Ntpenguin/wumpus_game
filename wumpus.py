@@ -42,17 +42,22 @@ def near_by(p_position, wum_position,b_position,pit_position):
     for room_nearby in cave[p_position]:
         if room_nearby == wum_position:
             print("I smell a Wumpus")
+            break
         if room_nearby in b_position:
             print("Bats Nearby")
+            break
         if room_nearby in pit_position:
             print("I feel a draft")
-
-
+            break
 
 
 print("Hunt the Wumpus!")
-print(player_position,wumpus_position,bat_positions,pit_positions)
-near_by(player_position,wumpus_position,bat_positions,pit_positions)
+while True:
+    print("You are in room", str(player_position))
+    near_by(player_position,wumpus_position,bat_positions,pit_positions)
+    options = ', '.join(str(item) for item in cave[player_position])
+    print("Tunnels lead to rooms", options)
+    break
 
 
 
