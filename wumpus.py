@@ -34,37 +34,43 @@ pit_positions.append(randomNumExcluding(1, 20, unUsable))
 
 
 def player_shoot(p_position):
+    arrow_trajectory = p_position
     print("Shooting")
+    global arrows
     arrows = 5
+    arrow_room = 0
     arrows_num = int(input("Shoot through how many rooms? (1 to 5): "))
     arrows_list = []
     for i in range(arrows_num):
         arrows_list.append([])
-    for j in arrows_list:
+    for _ in arrows_list:
         if 1 <= arrows_num <= 5:
-            print("Room #" + str(len(j)), "of path")
+            arrow_room = arrow_room + 1
+            arrows = arrows - 1
+            print()
+            print("Room #" + str(arrow_room), "of path")
             room = int(input(""))
-            if room in cave[p_position]:
-                print("Your arrow landed in room: " + str(room))
-                print("You have", str(arrows - 1), "arrows left!")
+            if room in cave[arrow_trajectory]:
+                print("Arrow is in room", str(room), "now...")
+                print("You have", str(arrows), "arrows left!")
+            elif room == p_position:
+                print("You shot yourself and died!")
+                quit()
             else:
                 print("Your arrow path is not a valid one... the arrow will travel randomly")
-                room = cave[p_position][randint(0, 2)]
-                print("Arrow is in room", str(room) + "...")
+                room = cave[arrow_trajectory][randint(0, 2)]
+                print("Arrow is in room", str(room), "now...")
+                print("You have", str(arrows), "arrows left!")
+            arrow_trajectory = room
         else:
-            print("INVALID")
+            quit()
 
-    '''    
-    for count in arrows_list:
-        if arrow_room in cave[p_position]:
-            print("Your arrow landed in room: " + str(room))
-            print("You have", str(count), "arrows left!")
-            break
-        else:
-            print("That was an invalid room. Next time, choose your room wisely...")
-            arrow_room = cave[p_position][randint(0, 2)]
-            print("Your arrow landed in room: " + str(arrow_room))
-    '''
+
+def arrow_count():
+    if arrows == 0:
+        print()
+        print("You ran out of arrows and died!")
+        quit()
 
 
 def player_move(p_position, w_position):
@@ -80,3 +86,4 @@ def near_by(p_position, wum_position, b_position, pit_position):
 
 
 player_shoot(6)
+arrow_count()
