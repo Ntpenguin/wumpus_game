@@ -29,19 +29,33 @@ pit_positions.append(randomNumExcluding(1,20,unUsable))
 unUsable.append(pit_positions[0])
 pit_positions.append(randomNumExcluding(1,20,unUsable))
 
-def player_move(p_position, wanted_position):
+def player_move(p_position, want_position):
+    global player_position
+    global wanted_room
     for room in cave[p_position]:
-        if wanted_position == room:
-            p_position = wanted_position
-            print("The player has moved to room: " + str(p_position))
-            print()
+        if want_position == room:
+            p_position = want_position
+            player_position = want_position
             break
-    if p_position != wanted_position:
-        print("It is not possible to move from", p_position, "to", wanted_position)
+    if p_position != want_position:
+        print("It is not possible to move from", p_position, "to", want_position)
         print()
 
-def player_shoot(player_positon):
-    print("Hub")
+def player_shoot(p_position):
+    print("Shooting")
+    arrows_num = int(input("Shoot through how many rooms? (1 to 5): "))
+    arrows_list = []
+    for i in range(arrows_num):
+        arrows_list.append([])
+    print("Room #1 of path")
+    room = input("")
+    if room in cave[p_position]:
+        print("Your arrow landed in room: " + str(room))
+        print("You have", str(len(arrows_list) - 1), "arrows left!")
+    else:
+        print("That was an invalid room. Next time, choose your room wisely...")
+        room = cave[p_position][randint(0, 2)]
+        print("Your arrow landed in room: " + str(room))
 
 def near_by(p_position, wum_position,b_position,pit_position):
     for room_nearby in cave[p_position]:
@@ -59,7 +73,7 @@ def near_by(p_position, wum_position,b_position,pit_position):
 print("Hunt the Wumpus!")
 print()
 while True:
-    print("You are in room", str(player_position))
+    print("You are in room", player_position)
     near_by(player_position,wumpus_position,bat_positions,pit_positions)
     options = ', '.join(str(item) for item in cave[player_position])
     print("Tunnels lead to rooms", options)
@@ -67,6 +81,7 @@ while True:
     shootOrMove = input("(1)Shoot or (2)move? (enter 1 or 2):")
     if int(shootOrMove) == 2:
         wanted_room = input("Where to?")
+        print()
         player_move(player_position,int(wanted_room))
 
 
