@@ -10,6 +10,7 @@
 # Assignment:   Wumpus Code - Final Project
 # Date:         12/7/22
 
+from tkinter import *
 from random import *
 
 cave = {1: [2, 5, 8], 2: [1, 3, 10], 3: [2, 4, 12], 4: [3, 5, 14], 5: [1, 4, 6],
@@ -17,6 +18,39 @@ cave = {1: [2, 5, 8], 2: [1, 3, 10], 3: [2, 4, 12], 4: [3, 5, 14], 5: [1, 4, 6],
        11: [19, 10, 12], 12: [11, 3, 13], 13: [12, 20, 14], 14: [4, 13, 15],
        15: [6, 14, 16], 16: [15, 17, 20], 17: [7, 18, 16], 18: [19, 17, 9],
        19: [18, 11, 20], 20: [13, 16, 19]}
+
+root = Tk()
+
+frameCnt = 12
+
+frames2 = [PhotoImage(file='hole.gif',format = 'gif -index %i' %(i)) for i in range(frameCnt)]
+
+def gif_hole(ind):
+
+    frame2 = frames2[ind]
+    ind += 1
+    if ind == frameCnt:
+        ind = 0
+    label.configure(image=frame2)
+    root.after(100, gif_hole, ind)
+
+label = Label(root)
+label.pack()
+
+frames3 = [PhotoImage(file='dino.gif',format = 'gif -index %i' %(i)) for i in range(frameCnt)]
+
+def gif_wumpus(ind):
+
+    frame3 = frames3[ind]
+    ind += 1
+    if ind == frameCnt:
+        ind = 0
+    label.configure(image=frame3)
+    root.after(100, gif_wumpus, ind)
+
+label = Label(root)
+label.pack()
+
 
 #This function gets a random number excluding the list
 def randomNumExcluding(bottom, top, exclude):
@@ -58,9 +92,13 @@ def player_move(p_position, want_position): #takes in the players postition and 
        wumpus_random()
        if player_position == wumpus_position: #if it is in the same room you die
            print("You were eaten by the wumpus!")
+           root.after(0, gif_wumpus, 0)
+           root.mainloop()
            quit()
    if player_position == pit_positions[0] or player_position == pit_positions[1]: # if you fall into a pit you die
        print("You fell into the hole!")
+       root.after(0, gif_hole, 0)
+       root.mainloop()
        quit()
    if player_position == bat_positions[0] or player_position == bat_positions[1]: # if you go into a room with a bat it randomly drops you off
        print("The bat has dropped you in a random room!")
@@ -137,6 +175,7 @@ print("Hunt the Wumpus!")
 print()
 while True: #loops through till something happens
    print("You are in room", player_position) #prints basic info
+   #print(player_position,wumpus_position,bat_positions,pit_positions)
    near_by(player_position,wumpus_position,bat_positions,pit_positions)
    options = ', '.join(str(item) for item in cave[player_position])
    print("Tunnels lead to rooms", options)
