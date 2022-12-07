@@ -29,11 +29,16 @@ pit_positions.append(randomNumExcluding(1,20,unUsable))
 unUsable.append(pit_positions[0])
 pit_positions.append(randomNumExcluding(1,20,unUsable))
 
-def player_move(p_position, w_position):
+def player_move(p_position, wanted_position):
     for room in cave[p_position]:
-        if w_position == room:
-            p_position = w_position
+        if wanted_position == room:
+            p_position = wanted_position
             print("The player has moved to room: " + str(p_position))
+            print()
+            break
+    if p_position != wanted_position:
+        print("It is not possible to move from", p_position, "to", wanted_position)
+        print()
 
 def player_shoot(player_positon):
     print("Hub")
@@ -52,12 +57,17 @@ def near_by(p_position, wum_position,b_position,pit_position):
 
 
 print("Hunt the Wumpus!")
+print()
 while True:
     print("You are in room", str(player_position))
     near_by(player_position,wumpus_position,bat_positions,pit_positions)
     options = ', '.join(str(item) for item in cave[player_position])
     print("Tunnels lead to rooms", options)
-    break
+    print()
+    shootOrMove = input("(1)Shoot or (2)move? (enter 1 or 2):")
+    if int(shootOrMove) == 2:
+        wanted_room = input("Where to?")
+        player_move(player_position,int(wanted_room))
 
 
 
